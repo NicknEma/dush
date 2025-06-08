@@ -1,0 +1,6 @@
+*.pdb
+*.rdi
+*.exe
+*.txt
+*.raddbg_project*
+dush
