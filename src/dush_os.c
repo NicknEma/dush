@@ -42,6 +42,8 @@ path_volume_name_len(String path) {
 		}
 	}
 	
+#else
+	(void)path;
 #endif
 	return len;
 }

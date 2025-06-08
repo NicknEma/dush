@@ -83,4 +83,12 @@ get_current_directory(Arena *arena) {
 	return result;
 }
 
+static String
+get_system_path(Arena *arena) {
+	unimplemented();
+	
+	(void)arena;
+	return string_from_lit("");
+}
+
 #endif
