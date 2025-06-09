@@ -337,7 +337,7 @@ static String push_stringf(Arena *arena, char *fmt, ...);
 static String push_stringf_va_list(Arena *arena, char *fmt, va_list args);
 static String string_from_sliceu8(SliceU8 s);
 static String string_clone(Arena *arena, String s);
-static String strings_concat(Arena *arena, String a, String b);
+static String strings_concat(Arena *arena, String *strings, i64 string_count);
 static char *cstring_from_string(Arena *arena, String s);
 
 static bool string_starts_with(String a, String b);

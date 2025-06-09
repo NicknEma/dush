@@ -77,7 +77,7 @@ main(void) {
 		
 		// Print prompt
 		String current_dir = get_current_directory(scratch.arena);
-		printf("%.*s", string_expand(strings_concat(scratch.arena, current_dir, string_from_lit(">"))));
+		printf("%.*s>", string_expand(current_dir));
 		
 		// Process command
 		// TODO: Evaluate variables, e.g. %PATH%
@@ -96,10 +96,10 @@ main(void) {
 		} else if (string_equals(command, string_from_lit("help"))) {
 			printf("This is the help text.\n");
 		} else if (string_equals(command, string_from_lit("pwd"))) {
-			printf("%.*s", string_expand(strings_concat(scratch.arena, current_dir, string_from_lit("\n\n"))));
+			printf("%.*s\n", string_expand(current_dir));
 		} else if (string_starts_with(command, string_from_lit("cd"))) {
 			if (args.len == 0) {
-				printf("%.*s", string_expand(strings_concat(scratch.arena, current_dir, string_from_lit("\n\n"))));
+				printf("%.*s\n", string_expand(current_dir));
 			} else {
 				set_current_directory(args);
 			}
@@ -138,7 +138,8 @@ main(void) {
 					{
 						String base = path_base(command);
 						if (!string_contains(base, '.')) {
-							file_name = strings_concat(scratch.arena, command, extension);
+							String temp[] = {command, extension};
+							file_name = strings_concat(scratch.arena, temp, array_count(temp));
 						}
 					}
 					
@@ -160,9 +161,11 @@ main(void) {
 									String loc  = string_stop(system_path, split_index);
 									system_path = string_skip(system_path, split_index + 1);
 									
-									// TODO: Use the correct separator for the current system
-									String full_path = push_stringf(scratch.arena, "%.*s/%.*s",
-																	string_expand(loc), string_expand(file_name));
+									String full_path = {0};
+									{
+										String temp[] = {loc, get_separator(), file_name};
+										full_path = strings_concat(scratch.arena, temp, array_count(temp));
+									}
 									
 									script_read = read_file(scratch.arena, full_path);
 									if (script_read.ok || last_file_error != File_Error_NOT_EXISTS) {
@@ -198,6 +201,8 @@ main(void) {
 			
 			allow_break();
 		}
+		
+		printf("\n");
 		
 		scratch_end(scratch);
 		allow_break();

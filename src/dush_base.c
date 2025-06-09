@@ -436,15 +436,23 @@ string_clone(Arena *arena, String s) {
 }
 
 static String
-strings_concat(Arena *arena, String a, String b) {
+strings_concat(Arena *arena, String *strings, i64 string_count) {
+	i64 total_len = 0;
+	for (i64 i = 0; i < string_count; i += 1) {
+		total_len += strings[i].len;
+	}
+	
 	String result = {
-		.data = push_nozero(arena, a.len + b.len),
-		.len  = a.len + b.len,
+		.data = push_nozero(arena, total_len),
+		.len  = total_len,
 	};
 	
 	if (result.data) {
-		memcpy(result.data,         a.data, a.len);
-		memcpy(result.data + a.len, b.data, b.len);
+		i64 offset = 0;
+		for (i64 i = 0; i < string_count; i += 1) {
+			memcpy(result.data + offset, strings[i].data, strings[i].len);
+			offset += strings[i].len;
+		}
 	} else {
 		result.len = 0;
 	}
