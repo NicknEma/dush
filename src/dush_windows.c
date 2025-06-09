@@ -108,18 +108,28 @@ set_current_directory(String dir) {
 			
 			if (last_error == ERROR_FILE_NOT_FOUND ||
 				last_error == ERROR_PATH_NOT_FOUND) {
-				fprintf(stderr, "The system cannot find the file specified.\n");
+				fprintf(stderr, "The system cannot find the file specified.\n"); // TODO: FormatMessage()
+			} else if (last_error == ERROR_FILENAME_EXCED_RANGE) {
+				char *message_I_would_like_to_print = ("Sorry, Windows doesn't allow paths longer than 260 "
+													   "characters unless you package your application "
+													   "with a manifest file. I have no intention of "
+													   "doing that, so blame Microsoft");
+				(void)message_I_would_like_to_print;
 				
-				// TODO: FormatMessage()
+				char *message_I_actually_print = ("The path specified is too long; the full absolute path must be "
+												  "strictly shorter than 260 characters");
+				
+				// Note: There's also this line in SetCurrentDirectory's docs:
+				//  Setting a current directory longer than MAX_PATH causes CreateProcessW to fail.
+				
+				fprintf(stderr, "Error trying to set the current directory to '%s': %s.\n",
+						dir_nt, message_I_actually_print);
 			} else {
-				
-				// ERROR_FILENAME_EXCED_RANGE
-				
-				allow_break();
-				
 #if AGGRESSIVE_ASSERTS
 				panic();
 #endif
+				
+				allow_break();
 			}
 		}
 	} else {
