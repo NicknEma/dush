@@ -126,7 +126,7 @@ main(void) {
 					// for CreateProcessA.
 					//
 					// It's not super important, so we just use 'command'.
-					fprintf(stderr, "Error starting process '%.*s': %.*s\n\n", string_expand(command), string_expand(last_process_error_string()));
+					fprintf(stderr, "Could not run '%.*s': %.*s\n", string_expand(command), string_expand(last_process_error_string()));
 				} else {
 					// Find a file in this folder with the .dush extension
 					// If nothing is found, search in the path
@@ -180,12 +180,12 @@ main(void) {
 						}
 						
 						if (script_read.ok) {
-							printf("Running script '%.*s'...\n\n", string_expand(file_name));
+							printf("Running script '%.*s'...\n", string_expand(file_name));
 						} else {
 							if (last_file_error != File_Error_NOT_EXISTS) {
-								fprintf(stderr, "Error running script '%.*s': %.*s\n\n", string_expand(file_name), string_expand(last_file_error_string()));
+								fprintf(stderr, "Could not run script '%.*s': %.*s\n", string_expand(file_name), string_expand(last_file_error_string()));
 							} else {
-								fprintf(stderr, "'%.*s' is not a known command, executable file or dush script in the current directory or in the path.\n\n", string_expand(command));
+								fprintf(stderr, "'%.*s' is not a known command, executable file or dush script in the current directory or in the path.\n", string_expand(command));
 							}
 						}
 					} else if (string_ends_with(file_name, string_from_lit(".txt"))) {
