@@ -335,13 +335,16 @@ static String string_from_sliceu8(SliceU8 s);
 static String string_clone(Arena *arena, String s);
 static String strings_concat(Arena *arena, String a, String b);
 static char *cstring_from_string(Arena *arena, String s);
+
 static bool string_starts_with(String a, String b);
 static bool string_ends_with(String a, String b);
 static bool string_equals(String a, String b);
 static bool string_equals_case_insensitive(String a, String b);
+
 static i64 string_find_first(String s, u8 c);
 static i64 string_count_occurrences(String s, u8 c);
 static i64 string_contains(String s, u8 c);
+
 static String string_skip(String s, i64 amount);
 static String string_chop(String s, i64 amount);
 static String string_stop(String s, i64 index);

@@ -7,4 +7,6 @@ static String get_line(Arena *arena);
 static String get_current_directory(Arena *arena);
 static String get_system_path(Arena *arena);
 
+static void   set_current_directory(String dir);
+
 #endif

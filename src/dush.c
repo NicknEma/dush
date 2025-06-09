@@ -79,6 +79,7 @@ main(void) {
 		printf("%.*s", string_expand(strings_concat(scratch.arena, current_dir, string_from_lit(">"))));
 		
 		// Process command
+		// TODO: Evaluate variables, e.g. %PATH%
 		String line = get_line(scratch.arena);
 		line = string_skip_chop_whitespace(line);
 		
@@ -86,7 +87,7 @@ main(void) {
 		if (space_index < 0) space_index = line.len;
 		
 		String command = string_stop(line, space_index);
-		String args    = string_skip(line, space_index);
+		String args    = string_skip(line, space_index+1);
 		
 		if (command.len == 0) {
 		} else if (string_equals(command, string_from_lit("exit"))) {
@@ -99,7 +100,7 @@ main(void) {
 			if (args.len == 0) {
 				printf("%.*s", string_expand(strings_concat(scratch.arena, current_dir, string_from_lit("\n\n"))));
 			} else {
-				
+				set_current_directory(args);
 			}
 		} else {
 			// Try to start a process or run a script

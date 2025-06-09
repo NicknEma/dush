@@ -89,4 +89,44 @@ get_system_path(Arena *arena) {
 	return result;
 }
 
+////////////////////////////////
+//~ Other
+
+static void
+set_current_directory(String dir) {
+	Scratch scratch = scratch_begin(0, 0);
+	
+	// I don't fully understand the rules under which SetCurrentDirectory operates, but *sometimes* it fails
+	// when the path starts with a whitespace.
+	// The path received by this function should already be trimmed, but we do it again just in case.
+	dir = string_skip_chop_whitespace(dir);
+	
+	char *dir_nt = cstring_from_string(scratch.arena, dir);
+	if (dir_nt != NULL) {
+		if (!SetCurrentDirectory(dir_nt)) {
+			int last_error = GetLastError();
+			
+			if (last_error == ERROR_FILE_NOT_FOUND ||
+				last_error == ERROR_PATH_NOT_FOUND) {
+				fprintf(stderr, "The system cannot find the file specified.\n");
+				
+				// TODO: FormatMessage()
+			} else {
+				
+				// ERROR_FILENAME_EXCED_RANGE
+				
+				allow_break();
+				
+#if AGGRESSIVE_ASSERTS
+				panic();
+#endif
+			}
+		}
+	} else {
+		fprintf(stderr, "Out of memory.\n");
+	}
+	
+	scratch_end(scratch);
+}
+
 #endif
