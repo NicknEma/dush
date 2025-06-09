@@ -97,7 +97,7 @@ main(void) {
 			printf("This is the help text.\n");
 		} else if (string_equals(command, string_from_lit("pwd"))) {
 			printf("%.*s\n", string_expand(current_dir));
-		} else if (string_starts_with(command, string_from_lit("cd"))) {
+		} else if (string_equals(command, string_from_lit("cd"))) {
 			if (args.len == 0) {
 				printf("%.*s\n", string_expand(current_dir));
 			} else {
