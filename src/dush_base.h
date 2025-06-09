@@ -270,6 +270,10 @@ static bool _arena_init(Arena *arena, Arena_Init_Params params);
 static bool arena_fini(Arena *arena);
 static void arena_reset(Arena *arena);
 
+static u64  arena_cap(Arena arena);
+static u64  arena_pos(Arena arena);
+static u64  arena_space(Arena arena);
+
 static void *push_nozero(Arena *arena, u64 size, u64 alignment);
 static void *push_zero(Arena *arena, u64 size, u64 alignment);
 

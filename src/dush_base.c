@@ -136,6 +136,23 @@ arena_reset(Arena *arena) {
 	pop_to(arena, 0);
 }
 
+//- Arena operations: info
+
+static u64
+arena_cap(Arena arena) {
+	return arena.cap;
+}
+
+static u64
+arena_pos(Arena arena) {
+	return arena.pos;
+}
+
+static u64
+arena_space(Arena arena) {
+	return arena.cap - arena.pos;
+}
+
 //- Arena operations: push
 
 static void *

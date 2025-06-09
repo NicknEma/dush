@@ -99,10 +99,15 @@ set_current_directory(String dir) {
 	Scratch scratch = scratch_begin(0, 0);
 	
 	char *dir_nt = cstring_from_string(scratch.arena, dir);
-	
-	if (chdir(dir_nt) < 0) {
-		// TODO: Read 'path_resolution(7) - Linux man page' to know more
-		// about what can go wrong.
+	if (dir_nt != NULL) {
+		if (chdir(dir_nt) < 0) {
+			// TODO: Read 'path_resolution(7) - Linux man page' to know more
+			// about what can go wrong.
+			fprintf(stderr, "Could not change directory to '%s': %s.\n",
+					dir_nt, strerror(errno));
+		}
+	} else {
+		errno = ENOMEM;
 		fprintf(stderr, "Could not change directory to '%s': %s.\n",
 				dir_nt, strerror(errno));
 	}
