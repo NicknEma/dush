@@ -48,6 +48,7 @@ get_line(Arena *arena) {
 				}
 				
 				memcpy(new_line_buffer, line_buffer, line_buffer_len);
+				line_buffer_cap = new_line_buffer_cap;
 				line_buffer = new_line_buffer;
 			}
 			
