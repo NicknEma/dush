@@ -91,4 +91,21 @@ get_system_path(Arena *arena) {
 	return string_from_lit("");
 }
 
+////////////////////////////////
+//~ Other
+
+static void
+set_current_directory(String dir) {
+	Scratch scratch = scratch_begin(0, 0);
+	
+	char *dir_nt = cstring_from_string(scratch.arena, dir);
+	
+	if (chdir(dir_nt) < 0) {
+		fprintf(stderr, "Could not change directory to '%s': %s.\n",
+				dir_nt, strerror(errno));
+	}
+	
+	scratch_end(scratch);
+}
+
 #endif
